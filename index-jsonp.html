@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="text" id="inp" name="" value="" >
+	<div id="box">
+		
+	</div>
+
+	<script>
+		//获取元素
+		var inp = document.getElementById("inp");
+		var box = document.getElementById("box");
+		//oninput事件绑定
+		//window对象上input事件的事件句柄,当<input>元素的value属性值由输入设备改变时,
+		//就会触发input事件
+		//该事件是冒泡的,如果window对象支持该事件, <input>文本框元素也同样支持
+		window.addEventListener('input',function(e){
+			//获取input标签中的值
+			var val = inp.value;
+			// jsonp 跨域  动态创建script标签 
+
+			//判断是否存在类名为sc的标签  存在则移除   
+			if(document.querySelector('.sc')){
+				//ChildNode.remove() 方法把从它所属的DOM树中删除对象 
+				document.querySelector('.sc').remove();
+			}
+
+			var sp = document.createElement('script');
+			sp.className = 'sc';
+			sp.src = 'https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word=' + val ;
+			//将赋值后的script标签 添加到body里面
+			document.body.appendChild(sp);
+		}) 
+
+		//后台传回来的回调函数  callback在后台调用 
+		//所以前台不需要再调用便可以执行  
+		function suggest_so(data){
+			// console.log(data); 对象形式的数据
+			box.innerHTML = '';
+			// result 是一个数组  Array(10);  循环遍历数组 取出数据 
+			for(var i = 0; i<data.result.length;i++){
+				//循环动态创建p标签 用来添加数据  
+				var p = document.createElement('p');
+				//赋值  
+				p.innerHTML = data.result[i].word;
+				//将遍历出来的数据添加到box中
+				box.appendChild(p);
+			}
+		}
+	</script>
+</body>
+</html>

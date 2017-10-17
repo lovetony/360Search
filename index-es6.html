@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/template-web.js"></script>
+</head>
+<body>
+<input id="inp" type="text" name="" value="">
+
+<div id="box">
+
+</div>
+<script>
+    $('#inp').on('input',function(){
+        $.ajax({
+            url: 'https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word=' + $(this).val(),
+            dataType: 'jsonp',
+            success: function(data){
+                var lis = '';
+                for(var i = 0; i<data.result.length;i++){
+                    lis += `
+                            <li> ${ data.result[i].word }</li>
+                            `;
+                    $('#box').html(lis);
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>
